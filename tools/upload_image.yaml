@@ -1,0 +1,77 @@
+identity:
+  author: "erbanku"
+  name: "upload_image"
+  label:
+    en_US: "Upload Image"
+description:
+  human:
+    en_US: "upload_image"
+  llm: "Upload a Dify image file to ImgBB (maximum 32,000,000 bytes). Anonymous by default; optional API-key mode. Names default to Unix timestamp seconds. Returns a direct URL, Markdown image and HTML embed. Images are sent to an external host; no album support."
+parameters:
+  - name: "image"
+    type: "file"
+    required: true
+    label:
+      en_US: "Image"
+    form: "form"
+    human_description:
+      en_US: "Select a Dify image file. Maximum 32 MB (32,000,000 bytes)."
+  - name: "upload_mode"
+    type: "select"
+    required: true
+    label:
+      en_US: "Upload Mode"
+    form: "form"
+    human_description:
+      en_US: "Anonymous uses ImgBB's website upload flow. API key uses its public API."
+    options:
+      - value: "anonymous"
+        label:
+          en_US: "Anonymous (default)"
+      - value: "api_key"
+        label:
+          en_US: "API key"
+    default: "anonymous"
+  - name: "name"
+    type: "string"
+    required: false
+    label:
+      en_US: "Image Name"
+    form: "llm"
+    human_description:
+      en_US: "Optional custom name. Defaults to Unix timestamp seconds; the image extension is preserved."
+    llm_description: "Optional custom image filename or name. Leave empty to name the image using current Unix timestamp seconds."
+  - name: "text_format"
+    type: "select"
+    required: true
+    label:
+      en_US: "Text Output Format"
+    form: "form"
+    human_description:
+      en_US: "Choose the standard text output for an Answer or text node. Named direct_url and markdown outputs are always available."
+    options:
+      - value: "direct_url"
+        label:
+          en_US: "Direct URL"
+      - value: "markdown"
+        label:
+          en_US: "Markdown image"
+      - value: "both"
+        label:
+          en_US: "Direct URL and Markdown"
+    default: "direct_url"
+extra:
+  python:
+    source: "tools/upload_image.py"
+output_schema:
+  type: object
+  properties:
+    direct_url:
+      type: string
+      description: "Direct HTTPS image URL for text or downstream nodes."
+    markdown:
+      type: string
+      description: "Ready-to-render Markdown image."
+    html:
+      type: string
+      description: "Escaped HTML img embed."

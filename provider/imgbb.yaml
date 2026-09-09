@@ -1,0 +1,26 @@
+identity:
+  author: "erbanku"
+  name: "imgbb"
+  label:
+    en_US: "ImgBB"
+  description:
+    en_US: "Upload images up to 32 MB anonymously or with an API key, returning direct URLs, Markdown and HTML embeds."
+  icon: "icon.png"
+  tags:
+    - "image"
+    - "utilities"
+tools:
+  - "tools/upload_image.yaml"
+extra:
+  python:
+    source: "provider/imgbb.py"
+credentials_for_provider:
+  api_key:
+    type: "secret-input"
+    required: false
+    label:
+      en_US: "ImgBB API Key (optional)"
+    placeholder:
+      en_US: "Leave blank for anonymous uploads"
+    help:
+      en_US: "Only needed when Upload Mode is API key. Anonymous mode does not use this key."

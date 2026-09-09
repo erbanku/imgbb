@@ -1,0 +1,30 @@
+version: "0.0.1"
+type: "plugin"
+author: "erbanku"
+name: "imgbb"
+label:
+  en_US: "ImgBB"
+description:
+  en_US: "Upload images up to 32 MB anonymously or with an API key, returning direct URLs, Markdown and HTML embeds."
+icon: "icon.png"
+resource:
+  memory: 268435456
+  permission:
+    tool:
+      enabled: true
+plugins:
+  tools:
+    - "provider/imgbb.yaml"
+meta:
+  version: "0.0.1"
+  arch:
+    - "amd64"
+    - "arm64"
+  runner:
+    language: "python"
+    version: "3.12"
+    entrypoint: "main"
+created_at: "2026-09-06T07:51:15Z"
+tags:
+  - "image"
+  - "utilities"
