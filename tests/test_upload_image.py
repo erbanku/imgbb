@@ -13,6 +13,8 @@ from provider.imgbb import ImgbbProvider, validate_api_key
 from tools import upload_image as module
 from tools.upload_image import MAX_IMAGE_BYTES, UploadError, UploadImageTool, download_image, image_filename, image_outputs, response_image
 
+FAKE_AUTH_TOKEN = "x" * 32
+
 
 @pytest.fixture
 def image():
@@ -30,7 +32,7 @@ def fake_network(monkeypatch, mode="anonymous", status=200, payload=None, homepa
         if request.url.host == "dify.example.test":
             return httpx.Response(200, content=b"data")
         if request.method == "GET":
-            return httpx.Response(200, text=homepage if homepage is not None else 'PF.obj.config.auth_token="0123456789abcdef0123456789abcdef";', headers={"set-cookie": "PHPSESSID=testsession; Path=/; Secure"})
+            return httpx.Response(200, text=homepage if homepage is not None else f'PF.obj.config.auth_token="{FAKE_AUTH_TOKEN}";', headers={"set-cookie": "PHPSESSID=testsession; Path=/; Secure"})
         if upload_error:
             raise upload_error
         return httpx.Response(status, json=payload)
@@ -54,7 +56,7 @@ def test_anonymous_is_default_and_does_not_send_key(monkeypatch, image):
     assert upload.headers["cookie"] == "PHPSESSID=testsession"
     assert "cookie" not in requests[0].headers
     assert b'name="source"; filename="1788678000.png"' in upload.content
-    assert b"0123456789abcdef0123456789abcdef" in upload.content
+    assert FAKE_AUTH_TOKEN.encode() in upload.content
     assert b"1788678000000" in upload.content
     assert all(b"test_api_key" not in request.content and "test_api_key" not in str(request.url) for request in requests)
     output = messages[0].message.json_object
@@ -222,7 +224,7 @@ def test_missing_anonymous_token_fails_without_upload(monkeypatch, image):
 
 
 def test_json_style_anonymous_token(monkeypatch, image):
-    requests = fake_network(monkeypatch, homepage='{"auth_token": "0123456789abcdef0123456789abcdef"}')
+    requests = fake_network(monkeypatch, homepage=f'{{"auth_token": "{FAKE_AUTH_TOKEN}"}}')
     invoke(image)
     assert len(requests) == 3
 

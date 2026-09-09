@@ -4,6 +4,7 @@
 ## 09/10/2026
 
 - Dropped `--no-index` and pinned `dify-plugin>=0.10.2,<0.11.0` so Marketplace pre-check can install a current SDK.
+- Replaced hex mock `auth_token` in tests so Marketplace package-secrets check does not treat fixtures as credentials.
 
 ## 09/09/2026
 
