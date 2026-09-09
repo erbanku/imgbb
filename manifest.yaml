@@ -7,6 +7,9 @@ label:
 description:
   en_US: "Upload images up to 32 MB anonymously or with an API key, returning direct URLs, Markdown and HTML embeds."
 icon: "icon.png"
+privacy: PRIVACY.md
+repo: https://github.com/erbanku/imgbb
+contact: 79493862+erbanku@users.noreply.github.com
 resource:
   memory: 268435456
   permission:
